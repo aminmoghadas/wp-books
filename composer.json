@@ -1,0 +1,13 @@
+{
+  "name": "keywp/wp-books",
+  "description": "A lightweight, PSR-4 structured WP plugin for managing books with AJAX and admin UI.",
+  "type": "wordpress-plugin",
+  "require": {
+    "php": ">=7.4"
+  },
+  "autoload": {
+    "psr-4": {
+      "WPBooks\\": "src/"
+    }
+  }
+}
