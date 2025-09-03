@@ -16,6 +16,11 @@ $autoload_path = __DIR__ . '/vendor/autoload.php';
 if ( file_exists( $autoload_path ) ) {
     require_once $autoload_path;
 } else {
-
+    require_once __DIR__ . '/src/Plugin.php';
+    require_once __DIR__ . '/src/Database.php';
 }
+
+add_action( 'plugins_loaded', function() {
+    WPBooks\Plugin::get_instance();
+} );
 
