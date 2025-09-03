@@ -59,6 +59,11 @@ class Plugin
     public function init(): void {
         try {
             Database::get_instance()->maybe_create_table();
+            Shortcode::get_instance()->register();
+
+            if ( !is_admin() ) {
+                add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_assets' ] );
+            }
 
         } catch ( Exception $e ) {
             error_log( 'WP Books init error: ' . $e->getMessage() );
@@ -73,5 +78,30 @@ class Plugin
     public function on_activation(): void {
         // Ensure table is created on activation.
         Database::get_instance()->maybe_create_table();
+    }
+
+    /**
+     * Enqueue frontend assets.
+     *
+     * @return void
+     */
+    public function enqueue_assets(): void {
+        $plugin_url = plugin_dir_url( dirname( __DIR__ ) . '/wp-books.php' );
+        wp_register_script(
+            'wp-books-frontend',
+            $plugin_url . 'assets/js/book-frontend.js',
+            [ 'jquery' ],
+            $this->version,
+            true
+        );
+
+        // Localize important data (ajax_url, nonce)
+        wp_localize_script( 'wp-books-frontend', 'WPBooksData', [
+            'ajax_url' => admin_url( 'admin-ajax.php' ),
+            'nonce'    => wp_create_nonce( 'wpbooks_nonce' ),
+            'per_page' => 10
+        ] );
+
+        wp_enqueue_script( 'wp-books-frontend' );
     }
 }
