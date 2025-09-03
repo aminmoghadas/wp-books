@@ -18,6 +18,7 @@ if ( file_exists( $autoload_path ) ) {
 } else {
     require_once __DIR__ . '/src/Plugin.php';
     require_once __DIR__ . '/src/Database.php';
+    require_once __DIR__ . '/src/Shortcode.php';
 }
 
 add_action( 'plugins_loaded', function() {
