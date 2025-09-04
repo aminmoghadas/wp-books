@@ -26,5 +26,6 @@ if ( file_exists( $autoload_path ) ) {
 
 add_action( 'plugins_loaded', function() {
     WPBooks\Plugin::get_instance();
+    WPBooks\Admin\Admin::get_instance()->register();
 } );
 

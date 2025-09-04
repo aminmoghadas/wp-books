@@ -139,7 +139,7 @@ class Admin {
         if ( ! current_user_can( 'manage_options' ) ) {
             wp_die( 'Unauthorized' );
         }
-        if ( ! isset( $_POST['_wpnonce'] ) || ! wp_verify_nonce( wp_unslash( $_POST['_wpnonce'] ), 'wpbooks_admin_bulk' ) ) {
+        if ( ! isset( $_POST['_wpnonce'] ) || ! wp_verify_nonce( wp_unslash( $_POST['_wpnonce'] ), 'bulk-books' ) ) {
             wp_die( 'Invalid nonce' );
         }
         $ids = isset( $_POST['book_ids'] ) ? (array) $_POST['book_ids'] : [];

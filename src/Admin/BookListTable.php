@@ -142,7 +142,7 @@ class BookListTable extends \WP_List_Table {
      */
     public function get_bulk_actions() {
         return [
-            'bulk-delete' => 'Delete'
+            'wpbooks_bulk_delete' => 'Delete'
         ];
     }
 

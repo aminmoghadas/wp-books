@@ -61,9 +61,7 @@ class Plugin
             Database::get_instance()->maybe_create_table();
             Shortcode::get_instance()->register();
             AjaxHandler::get_instance()->register();
-            if ( is_admin() ) {
-                Admin\Admin::get_instance()->register();
-            } else {
+            if ( !is_admin() ) {
                 add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_assets' ] );
             }
 

@@ -21,8 +21,7 @@ if ( isset($_GET['deleted']) ) $message = 'Book(s) deleted.';
     <?php endif; ?>
 
     <form method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>">
-        <?php wp_nonce_field( 'wpbooks_admin_bulk' ); ?>
-        <input type="hidden" name="action" value="wpbooks_bulk_delete">
+
         <?php $book_table->display(); ?>
         <p>
             <input type="submit" class="button button-primary" value="Delete Selected">
