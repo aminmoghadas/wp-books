@@ -2,7 +2,7 @@
 
 namespace WPBooks\Admin;
 
-use Amin\WPBooks\Database;
+use WPBooks\Database;
 
 /**
  * Class Admin

@@ -46,18 +46,23 @@ class BookListTable extends \WP_List_Table {
      * @return void
      */
     public function prepare_items() {
-        $per_page = 20;
+        $per_page = 10;
         $current_page = $this->get_pagenum();
         $result = $this->db->get_books($current_page, $per_page);
+
 
         $total_items = $result['total'];
         $this->items = $result['items'];
 
+        $this->_column_headers = [ $this->get_columns(), $this->get_hidden_columns(), $this->get_sortable_columns() ];
+
         $this->set_pagination_args([
             'total_items' => $total_items,
-            'per_page'    => $per_page
+            'per_page'    => $per_page,
+            'total_pages' => ceil($total_items / $per_page)
         ]);
     }
+
 
     /**
      * Defines the columns displayed in the table.
@@ -71,6 +76,27 @@ class BookListTable extends \WP_List_Table {
             'author' => 'Author',
             'published_year' => 'Published Year',
             'actions' => 'Actions'
+        ];
+    }
+
+    /**
+     * Hidden columns.
+     *
+     * @return array
+     */
+    public function get_hidden_columns() {
+        return [];
+    }
+
+    /**
+     * Sortable columns.
+     *
+     * @return array
+     */
+    public function get_sortable_columns() {
+        return [
+            'title'          => [ 'title', false ],
+            'published_year' => [ 'published_year', false ]
         ];
     }
 
@@ -89,10 +115,10 @@ class BookListTable extends \WP_List_Table {
             case 'published_year':
                 return esc_html( $item->{$column_name} );
             case 'actions':
-                $edit_url = admin_url('admin.php?page=wpbooks-edit&book_id=' . intval($item->id));
-                return '<a href="' . esc_url(admin_url('admin.php?page=wpbooks-add&book_id=' . intval($item->id))) . '">Edit</a>';
+                $edit_url = admin_url('admin.php?page=wpbooks-add&book_id=' . intval($item->id));
+                return '<a href="' . esc_url($edit_url) . '">Edit</a>';
             default:
-                return print_r( $item, true );
+                return '';
         }
     }
 
@@ -121,18 +147,6 @@ class BookListTable extends \WP_List_Table {
     }
 
     /**
-     * Defines sortable columns for the table.
-     *
-     * @return array
-     */
-    public function get_sortable_columns() {
-        return [
-            'title' => ['title', false],
-            'published_year' => ['published_year', false]
-        ];
-    }
-
-    /**
      * Renders the "title" column with row actions.
      *
      * @param object $item Current row item.
@@ -148,7 +162,7 @@ class BookListTable extends \WP_List_Table {
     }
 
     /**
-     * Renders the whole table (overrides WP_List_Table default display).
+     * Render the table with headers, rows and footers.
      *
      * @return void
      */
@@ -160,7 +174,6 @@ class BookListTable extends \WP_List_Table {
         $this->screen->render_screen_reader_content( 'heading_list' );
         ?>
         <table class="wp-list-table <?php echo implode( ' ', $this->get_table_classes() ); ?>">
-            <?php $this->print_table_description(); ?>
             <thead>
             <tr>
                 <?php $this->print_column_headers(); ?>
@@ -187,4 +200,7 @@ class BookListTable extends \WP_List_Table {
         <?php
         $this->display_tablenav( 'bottom' );
     }
+
+
+
 }
