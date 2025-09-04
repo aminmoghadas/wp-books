@@ -7,7 +7,7 @@ namespace WPBooks;
  *
  * Registers AJAX endpoints and handles AJAX requests.
  *
- * @package Amin\WPBooks
+ * @package WPBooks
  */
 class AjaxHandler {
     /**
