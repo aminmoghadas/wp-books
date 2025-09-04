@@ -19,6 +19,7 @@ if ( file_exists( $autoload_path ) ) {
     require_once __DIR__ . '/src/Plugin.php';
     require_once __DIR__ . '/src/Database.php';
     require_once __DIR__ . '/src/Shortcode.php';
+    require_once __DIR__ . '/src/AjaxHandler.php';
 }
 
 add_action( 'plugins_loaded', function() {
